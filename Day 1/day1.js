@@ -10,34 +10,31 @@ try {
 
   var total_calibration_value = 0
 
-  lines.forEach(function(line) {
+  lines.forEach(function (line) {
     var first_digit
     var found_first_digit = false
     var last_digit
     var found_last_digit = false
 
-    for(i=0;i<line.length && (!found_first_digit || !found_last_digit);i++){
-      if (!found_first_digit){
+    for (i = 0; i < line.length && (!found_first_digit || !found_last_digit); i++) {
+      if (!found_first_digit) {
         char1 = line[i]
-        if (char1>= '0' && char1<='9'){
+        if (char1 >= '0' && char1 <= '9') {
           first_digit = char1
           found_first_digit = true
         }
       }
-      
-      if (!found_last_digit){
-        char2 = line[line.length-i-1]
-        if (char2>= '0' && char2<='9'){
+
+      if (!found_last_digit) {
+        char2 = line[line.length - i - 1]
+        if (char2 >= '0' && char2 <= '9') {
           last_digit = char2
           found_last_digit = true
         }
       }
 
-      if (found_first_digit && found_last_digit){
-        console.log('Line: '+line)
-        console.log('Code: '+first_digit+last_digit)
-        total_calibration_value += Number(first_digit+last_digit)
-        console.log("Sumador"+total_calibration_value)
+      if (found_first_digit && found_last_digit) {
+        total_calibration_value += Number(first_digit + last_digit)
       }
     }
   });
