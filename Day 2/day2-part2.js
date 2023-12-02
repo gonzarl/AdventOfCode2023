@@ -10,12 +10,6 @@ try {
 
   let total = 0
 
-  const colorLimits = {
-    red: 12,
-    green: 13,
-    blue: 14,
-  }
-
   function getGameId(inputString) {
     const patron = /Game (\d+): (.+)/;
 
@@ -27,44 +21,40 @@ try {
     return { gameId, subsets };
   }
 
-  function checkPossible(number, color) {
-    return number <= colorLimits[color];
-  }
-
-  function checkSet(set) {
+  function checkSet(set, minColors) {
     set = set.trim();
-    let isPossible = true
+
     const cubes = set.split(',')
     for (let cube of cubes) {
       cube = cube.trim()
       const [number, color] = cube.split(' ')
-      const revision = checkPossible(number, color)
-      if (!revision) {
-        isPossible = false
-        break
-      }
+      const toNumber = Number(number)
+      if (minColors[color] < toNumber)
+        minColors[color] = toNumber
+
     }
-    return isPossible
+    return minColors
 
   }
 
   lines.forEach(function (line) {
     const { gameId, subsets } = getGameId(line)
 
+    let colors = {
+      red: 0,
+      green: 0,
+      blue: 0,
+    }
+
     const sets = subsets.split(';')
-    let validGame = true
 
     for (const set of sets) {
-      const validSet = checkSet(set)
-      if (!validSet) {
-        validGame = false
-        break
-      }
+      colors = checkSet(set, colors)
     }
 
-    if (validGame) {
-      total += gameId
-    }
+    const power = colors['red'] * colors['green'] * colors['blue']
+
+    total += power
 
   })
 
